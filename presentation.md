@@ -104,13 +104,21 @@ Note: The process of authentication while applying for a university exam
 ### Advantages of JWT
 
 #### Stateless
-JWTs are self-contained, no server side storage required like sessions and cookies.
+JWTs are self-contained, no server side storage is required.
 
 #### Compact and Efficient
 Can be encoded as part of the URL or as a standard http header
 
 #### Secure
 It uses secure cryptographic algorithms like HMAC or RSA
+
+
+### Statelessness
+
+
+#### Traditional Session based Authentication and Authorization
+![Session](./session.png)
+
 
 
 ### Disadvantages of JWT
@@ -126,9 +134,44 @@ Short expiration requires frequent re-authentication.
 
 
 
+### Security Considerations
+- Token Confidentiality: Use JWT over secure communications channels such as https.
+- Token Integrity: Use strong encryption algorithms like HMAC, RSA or SHA.
+- Token Replay Attacks
+    - Token Expiration: Set an expiry for the token to avoid malicious reuse.
+    - Token Rotation: Rotate the tokens frequently.
+
+
+
+### Technologies using JWT
+
+
+#### Single Sign On ( SSO )
+Token reuse for different services
+![sso](./sso.png)
+
+
+#### OAuth 2.0
+Delegate authorization to a third-party
+![oauth](./oauth.png)
+
+
+#### Microservice Architecture
+Allows seamless communication between different microservices.
+![micro](./micro.png)
+
+
+
+### JWT storage on the client
+##### HTTP-Only Cookies
+##### Local Storage
+##### Session Storage
+
+
+
 ### Implementation Example 
 
-Authentication and Token Generation
+Authentication and Token Generation (PyJWT)
 ```python [120: 2-7]
 if username == "testuser" and password == "password123":
     token = jwt.encode({
@@ -141,7 +184,7 @@ return jsonify({'message': 'Invalid credentials'}), 401
 ```
 
 Authorization
-```python[1: 2-3]
+```python [234: 2-3]
 try:
     decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
     return jsonify({'message': f'Welcome {decoded_token["user"]}'})
@@ -174,3 +217,10 @@ curl -X GET http://127.0.0.1:5000/protected
 -H "Authorization: Bearer <TOKEN>"
 ```
 
+
+
+### Thank You
+```
+Presentation: https://present.angeloantony.com
+Source: https://github.com/angelontny/presentation.git
+```
